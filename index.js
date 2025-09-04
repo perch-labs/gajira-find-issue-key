@@ -1,9 +1,4 @@
-const fs = require('fs')
-const YAML = require('yaml')
 const core = require('@actions/core')
-
-const cliConfigPath = `${process.env.HOME}/.jira.d/config.yml`
-const configPath = `${process.env.HOME}/jira/config.yml`
 const Action = require('./action')
 
 // eslint-disable-next-line import/no-dynamic-require
@@ -28,21 +23,12 @@ async function exec () {
       } else {
         console.log(`Detected issueKey: ${result.issue}`)
       }
-      console.log(`Saving ${result.issue} to ${cliConfigPath}`)
-      console.log(`Saving ${result.issue} to ${configPath}`)
 
       // Expose created issue's key(s) as an output
       core.setOutput('issue', result.issue)
       if (result.issues) {
         core.setOutput('issues', result.issues.join(','))
       }
-
-      const yamledResult = YAML.stringify(result)
-      const extendedConfig = Object.assign({}, config, result)
-
-      fs.writeFileSync(configPath, YAML.stringify(extendedConfig))
-
-      return fs.appendFileSync(cliConfigPath, yamledResult)
     }
 
     console.log('No issue keys found.')
