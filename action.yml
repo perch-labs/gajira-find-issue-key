@@ -13,7 +13,9 @@ inputs:
     default: commits
 outputs:
   issue:
-    description: Key of the found issue
+    description: Key(s) of the found issue(s) - comma-separated if multiple
+  issues:
+    description: Comma-separated list of all found issue keys (same as issue output)
 runs:
-  using: 'node16'
+  using: 'node20'
   main: './dist/index.js'

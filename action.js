@@ -51,12 +51,17 @@ module.exports = class {
       return
     }
 
+    const validIssues = []
     for (const issueKey of match) {
       const issue = await this.Jira.getIssue(issueKey)
 
       if (issue) {
-        return { issue: issue.key }
+        validIssues.push(issue.key)
       }
+    }
+
+    if (validIssues.length > 0) {
+      return { issue: validIssues.join(','), issues: validIssues }
     }
   }
 

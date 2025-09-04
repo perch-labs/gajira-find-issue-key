@@ -57,12 +57,17 @@ module.exports = class {
       return
     }
 
+    const validIssues = []
     for (const issueKey of match) {
       const issue = await this.Jira.getIssue(issueKey)
 
       if (issue) {
-        return { issue: issue.key }
+        validIssues.push(issue.key)
       }
+    }
+
+    if (validIssues.length > 0) {
+      return { issue: validIssues.join(','), issues: validIssues }
     }
   }
 
@@ -32521,12 +32526,19 @@ async function exec () {
     }).execute()
 
     if (result) {
-      console.log(`Detected issueKey: ${result.issue}`)
+      if (result.issues && result.issues.length > 1) {
+        console.log(`Detected issueKeys: ${result.issues.join(', ')}`)
+      } else {
+        console.log(`Detected issueKey: ${result.issue}`)
+      }
       console.log(`Saving ${result.issue} to ${cliConfigPath}`)
       console.log(`Saving ${result.issue} to ${configPath}`)
 
-      // Expose created issue's key as an output
+      // Expose created issue's key(s) as an output
       core.setOutput('issue', result.issue)
+      if (result.issues) {
+        core.setOutput('issues', result.issues.join(','))
+      }
 
       const yamledResult = YAML.stringify(result)
       const extendedConfig = Object.assign({}, config, result)
