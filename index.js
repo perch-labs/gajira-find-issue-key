@@ -8,7 +8,11 @@ const Action = require('./action')
 
 // eslint-disable-next-line import/no-dynamic-require
 const githubEvent = require(process.env.GITHUB_EVENT_PATH)
-const config = YAML.parse(fs.readFileSync(configPath, 'utf8'))
+const config = {
+  baseUrl: process.env.JIRA_BASE_URL,
+  email: process.env.JIRA_USER_EMAIL,
+  token: process.env.JIRA_API_TOKEN
+}
 
 async function exec () {
   try {

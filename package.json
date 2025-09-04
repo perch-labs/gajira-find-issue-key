@@ -4,12 +4,12 @@
   "description": "Find issue keys in string",
   "main": "index.js",
   "scripts": {
-		"prepare": "husky install",
+    "prepare": "husky install",
     "test": "jest",
     "build": "ncc build index.js -s",
     "start": "ncc build index.js -w",
-		"lint": "eslint",
-		"precommit": "run-p lint build"
+    "lint": "eslint",
+    "precommit": "run-p lint build"
   },
   "author": "Atlassian <github@atlassian.com>",
   "license": "ISC",
